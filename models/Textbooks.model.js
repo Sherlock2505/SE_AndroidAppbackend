@@ -10,13 +10,17 @@ const textSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    snapshots: [String],
+    used_for: {type: String, required: true},
+    photos: [String],
     author: {
         type: String,
     },
     edition: {
         type: String
-    }
+    },
+    pincode: {type:Number, required: true},
+    location: {type:String, required: true},
+    owner: {type:mongoose.Schema.Types.ObjectId, required: true, ref: 'Users'}
 },{
     timestamps: true
 })
