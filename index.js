@@ -16,7 +16,7 @@ app.use(express.json())
 app.use('/users',userRouter)
 app.use('/images',imageRouter)
 
-const port = 3000
+const port = process.env.PORT
 app.listen(port, () => {
     console.log('Server is up at port '+port)
 })

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
 
-const url = "mongodb+srv://taskapp:taskApp123@cluster0-f7gks.mongodb.net/SE_App?retryWrites=true&w=majority"
+const url = process.env.DATABASE_URL
 
 mongoose.connect(url, {
     useNewUrlParser: true,

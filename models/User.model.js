@@ -35,7 +35,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    dp_url:{type: String, required:true},
+    dp_url:{type: String},
     tokens:[{
         token: {
             type: String,
@@ -49,7 +49,7 @@ const userSchema = new mongoose.Schema({
 userSchema.methods.generateAuthToken = async function () {
     const user = this
     // const token = jwt.sign({_id:user._id.toString()}, process.env.JWT_SECRET, {expiresIn: "8 days"})
-    const token = jwt.sign({_id:user._id.toString()}, 'thisismysecret', {expiresIn: "8 days"})
+    const token = jwt.sign({_id:user._id.toString()}, process.env.JWT_SECRET, {expiresIn: "8 days"})
 
     user.tokens = user.tokens.concat({ token })
     await user.save() 
@@ -66,8 +66,8 @@ userSchema.methods.toJSON = function() {
     return userObject
 }
 
-userSchema.statics.findByCredentials = async (email,password) => {
-    const user = await User.findOne({email})
+userSchema.statics.findByCredentials = async (phone,password) => {
+    const user = await User.findOne({phone})
 
     if(!user){
         throw new Error('Unable to Login')

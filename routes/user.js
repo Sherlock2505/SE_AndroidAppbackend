@@ -17,7 +17,7 @@ router.post('/create', upload.single('prof_pic'), async (req, res)=>{
     if(req.file!=undefined){
         user.dp_url = req.file.filename
     }
-    
+
     try{
         await user.save()
         const token = await user.generateAuthToken()
