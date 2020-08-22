@@ -2,7 +2,7 @@ const crypto = require('crypto')
 const path = require('path')
 const GridFsStorage = require('multer-gridfs-storage')
 // const uri = process.env.URI
-const uri = "mongodb+srv://taskapp:taskApp123@cluster0-f7gks.mongodb.net/SE_App?retryWrites=true&w=majority"
+const uri = process.env.DATABASE_URL
 
 const storage = new GridFsStorage({
     url: uri,
