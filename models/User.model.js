@@ -36,6 +36,8 @@ const userSchema = new mongoose.Schema({
         required: true,
     },
     dp_url:{type: String},
+    location: {type: String, required: true},
+    pincode: {type:Number, required: true},
     tokens:[{
         token: {
             type: String,
