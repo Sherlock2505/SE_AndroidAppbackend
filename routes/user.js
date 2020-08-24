@@ -4,6 +4,10 @@ const User = require('../models/User.model')
 const multer = require('multer')
 const auth = require('../middleware/auth')
 const upload = require('../db/upload')
+const ewasteModel = require('../models/Ewaste.model')
+const NwasteModel = require('../models/Notebooks.model')
+const TwasteModel = require('../models/Textbooks.model')
+const { array } = require('../db/upload')
 
 //Route for getting profile of user
 router.get('/me', auth, (req, res) => {
@@ -74,6 +78,35 @@ router.patch('/update',auth, async (req, res) => {
         res.status(400).send(e)
     }
 
+})
+
+//Route to add item to wishlist
+router.post('/wishlist/:id', auth, async (req, res) => {
+    try{
+        req.user.wishlist.push(req.params.id)
+        await req.user.save()
+    }catch(e){
+        res.status(400).send(e)
+    }
+})
+
+//Route for getting the wishlist of user
+router.get('/wishlist', auth, async (req, res) => {
+
+    let items = []
+
+    req.user.wishlist.map(async (item_id) => {
+        item = await ewasteModel.findById(item_id)
+        if(!item){
+            item = await NwasteModel.findById(item_id)
+        }
+        if(!item){
+            item = await TwasteModel.findById(item_id)
+        }
+        items.push(item)
+    })
+    
+    res.send(items)
 })
 
 module.exports = router

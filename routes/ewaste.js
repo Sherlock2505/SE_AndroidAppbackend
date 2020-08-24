@@ -39,6 +39,18 @@ router.post('/delete/:id',auth,async (req, res)=> {
 
 })
 
+//Route for viewing individual ewaste 
+router.get('/view/:id',auth, async(req, res) => {
+    const id = req.params.id
+    const ewaste = await ewasteModel.findById(id)
+
+    try{
+        res.send(ewaste)
+    }catch(e){
+        res.status(400).send(e)
+    }
+})
+
 //Route for sending all on sale ewastes by user
 router.get('/all/me',auth,async(req,res) => {
 

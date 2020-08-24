@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const { schema } = require('./Ewaste.model')
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -38,6 +39,7 @@ const userSchema = new mongoose.Schema({
     dp_url:{type: String},
     location: {type: String, required: true},
     pincode: {type:Number, required: true},
+    wishlist:[mongoose.Schema.Types.ObjectId],
     tokens:[{
         token: {
             type: String,
