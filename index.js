@@ -7,6 +7,7 @@ const Ewaste = require('./models/Ewaste.model')
 //Routes exported
 const userRouter = require('./routes/user')
 const imageRouter = require('./routes/supporting/images')
+const ewasteRouter = require('./routes/ewaste')
 
 const connection = require('./db/mongoose')
 const mongoose = require('mongoose')
@@ -15,6 +16,7 @@ const app = express()
 app.use(express.json())
 app.use('/users',userRouter)
 app.use('/images',imageRouter)
+app.use('/ewaste',ewasteRouter)
 
 const port = process.env.PORT
 app.listen(port, () => {
