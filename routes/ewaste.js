@@ -64,7 +64,7 @@ router.get('/all/me',auth,async(req,res) => {
 })
 
 //Route for sending all ewastes on sale
-router.get('/all', auth, async(req, res)=>{
+router.get('/all', async(req, res)=>{
 
     try{
         const ewastes = await ewasteModel.find()
@@ -75,7 +75,7 @@ router.get('/all', auth, async(req, res)=>{
 })
 
 //Route for sending e-wastes by location filter
-router.get('/all/:pin', auth, async(req, res) => {
+router.get('/all/:pin', async(req, res) => {
 
     try{
         const ewastes = await ewasteModel.find({pincode:req.params.pin})
