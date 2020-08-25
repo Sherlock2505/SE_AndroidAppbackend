@@ -58,6 +58,7 @@ router.get('/view_noauth/:id', async(req, res) => {
     const ewaste = await ewasteModel.findById(id)
 
     ewaste = {
+        _id: ewaste._id,
         name: ewaste.name,
         photos: ewaste.photos,
         price: ewaste.price,
@@ -92,7 +93,19 @@ router.get('/all', async(req, res)=>{
 
     try{
         const ewastes = await ewasteModel.find()
-        res.send(ewastes)
+
+        let ewastes_mod = ewastes.map(ewaste => {
+            return {
+                _id: ewaste._id,
+                name: ewaste.name,
+                photos: ewaste.photos[0],
+                price: ewaste.price,
+                used_for: ewaste.used_for,
+                pincode: ewaste.pincode,
+            }
+        })
+        
+        res.send(ewastes_mod)
     }catch(e){
         res.status(400).send(e)
     }
@@ -103,7 +116,19 @@ router.get('/all/:pin', async(req, res) => {
 
     try{
         const ewastes = await ewasteModel.find({pincode:req.params.pin})
-        res.send(ewastes)
+        
+        let ewastes_mod = ewastes.map(ewaste => {
+            return {
+                _id: ewaste._id,
+                name: ewaste.name,
+                photos: ewaste.photos[0],
+                price: ewaste.price,
+                used_for: ewaste.used_for,
+                pincode: ewaste.pincode,
+            }
+        })
+        
+        res.send(ewastes_mod)
     }catch(e){
         res.status(400).send(e)
     }
