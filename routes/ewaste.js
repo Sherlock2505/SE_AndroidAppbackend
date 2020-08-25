@@ -39,10 +39,34 @@ router.post('/delete/:id',auth,async (req, res)=> {
 
 })
 
-//Route for viewing individual ewaste 
+//Route for viewing individual ewaste (authenticated)
 router.get('/view/:id',auth, async(req, res) => {
     const id = req.params.id
     const ewaste = await ewasteModel.findById(id)
+
+    try{
+        res.send(ewaste)
+    }catch(e){
+        res.status(400).send(e)
+    }
+})
+
+//Route for viewing individual ewaste (not authenticated)
+//Seller info will not be available to user
+router.get('/view_noauth/:id', async(req, res) => {
+    const id = req.params.id
+    const ewaste = await ewasteModel.findById(id)
+
+    ewaste = {
+        name: ewaste.name,
+        photos: ewaste.photos,
+        price: ewaste.price,
+        used_for: ewaste.used_for,
+        specifications: ewaste.specifications,
+        pincode: ewaste.pincode,
+        location: "Login to get full info",
+        owner: "Login to get full info"
+    }
 
     try{
         res.send(ewaste)

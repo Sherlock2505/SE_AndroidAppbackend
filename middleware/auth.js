@@ -16,7 +16,13 @@ const auth = async (req, res, next) => {
         next()
     }catch(e){
         // console.log(e)
-        res.status(401).send({error: 'Please authenticate.' })    
+        // console.log(req.baseUrl)
+        if(req.url.split("/").length > 2 && req.url.split("/")[1] == "view"){
+            res.redirect(`${req.baseUrl}/view_noauth/${req.params.id}`)
+        }
+        else{
+            res.status(401).send({error: 'Please authenticate.' })    
+        }
     }
 }
 
