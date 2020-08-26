@@ -100,7 +100,16 @@ router.get('/all', async(req, res)=>{
 
     try{
         const ewastes = await ewasteModel.find()
-        let ewastes_mod = ewastes.map(ewaste => {return ewaste.toJSON()})        
+        let ewastes_mod = ewastes.map(ewaste => {
+            return {
+                _id: ewaste._id,
+                name: ewaste.name,
+                img: ewaste.photos[0],
+                price: ewaste.price,
+                used_for: ewaste.used_for,
+                pincode: ewaste.pincode,
+            }
+        })        
         res.send(ewastes_mod)
 
     }catch(e){
@@ -114,7 +123,16 @@ router.get('/all/:pin', async(req, res) => {
     try{
         const ewastes = await ewasteModel.find({pincode:req.params.pin})
         
-        let ewastes_mod = ewastes.map(ewaste => {return ewaste.toJSON()})        
+        let ewastes_mod = ewastes.map(ewaste => {
+            return {
+                _id: ewaste._id,
+                name: ewaste.name,
+                img: ewaste.photos[0],
+                price: ewaste.price,
+                used_for: ewaste.used_for,
+                pincode: ewaste.pincode,
+            }
+        })        
         res.send(ewastes_mod)
 
     }catch(e){
