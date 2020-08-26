@@ -28,10 +28,12 @@ router.post('/create',auth, upload.fields([{name:'gallery', maxCount:8}]),async 
 router.post('/delete/:id',auth,async (req, res)=> {
     
     const id = req.params.id
-    const ewatses = await ewasteModel.find({owner:req.user._id})
 
     try{
-        await ewasteModel.deleteOne({_id:id})
+        const ewaste = await ewasteModel.find({owner:req.user._id,id:_id})
+        if(ewaste){
+            await ewasteModel.deleteOne({_id:id})
+        }
         res.status(200).send(ewastes)
     }catch(e){
         res.status(400).send(e)
@@ -43,7 +45,7 @@ router.post('/delete/:id',auth,async (req, res)=> {
 router.get('/view/:id',auth, async(req, res) => {
     const id = req.params.id
     const ewaste = await ewasteModel.findById(id)
-
+    // console.log(ewaste)
     try{
         res.send(ewaste)
     }catch(e){
@@ -55,23 +57,25 @@ router.get('/view/:id',auth, async(req, res) => {
 //Seller info will not be available to user
 router.get('/view_noauth/:id', async(req, res) => {
     const id = req.params.id
-    const ewaste = await ewasteModel.findById(id)
-
-    ewaste = {
-        _id: ewaste._id,
-        name: ewaste.name,
-        photos: ewaste.photos,
-        price: ewaste.price,
-        used_for: ewaste.used_for,
-        specifications: ewaste.specifications,
-        pincode: ewaste.pincode,
-        location: "Login to get full info",
-        owner: "Login to get full info"
-    }
-
     try{
+        let ewaste = await ewasteModel.findById(id)
+
+        ewaste = {
+            _id: ewaste._id,
+            name: ewaste.name,
+            photos: ewaste.photos,
+            price: ewaste.price,
+            used_for: ewaste.used_for,
+            specifications: ewaste.specifications,
+            pincode: ewaste.pincode,
+            location: "Login to get full info",
+            owner: "Login to get full info"
+        }
+
         res.send(ewaste)
+    
     }catch(e){
+        console.log(e)
         res.status(400).send(e)
     }
 })
@@ -81,7 +85,8 @@ router.get('/all/me',auth,async(req,res) => {
 
     try{
         const all_ewaste = await ewasteModel.find({owner: req.user._id})
-        res.status(200).send(all_ewaste)
+        // const ewastes = all_ewaste.map(ewaste => ewaste.toObject())
+        res.send(all_ewaste)
     }catch(e){
         res.status(400).send(e)
     }
@@ -93,19 +98,9 @@ router.get('/all', async(req, res)=>{
 
     try{
         const ewastes = await ewasteModel.find()
-
-        let ewastes_mod = ewastes.map(ewaste => {
-            return {
-                _id: ewaste._id,
-                name: ewaste.name,
-                photos: ewaste.photos[0],
-                price: ewaste.price,
-                used_for: ewaste.used_for,
-                pincode: ewaste.pincode,
-            }
-        })
-        
+        let ewastes_mod = ewastes.map(ewaste => {return ewaste.toJSON()})        
         res.send(ewastes_mod)
+
     }catch(e){
         res.status(400).send(e)
     }
@@ -117,21 +112,13 @@ router.get('/all/:pin', async(req, res) => {
     try{
         const ewastes = await ewasteModel.find({pincode:req.params.pin})
         
-        let ewastes_mod = ewastes.map(ewaste => {
-            return {
-                _id: ewaste._id,
-                name: ewaste.name,
-                photos: ewaste.photos[0],
-                price: ewaste.price,
-                used_for: ewaste.used_for,
-                pincode: ewaste.pincode,
-            }
-        })
-        
+        let ewastes_mod = ewastes.map(ewaste => {return ewaste.toJSON()})        
         res.send(ewastes_mod)
+
     }catch(e){
         res.status(400).send(e)
     }
+    
 })
 
 module.exports = router

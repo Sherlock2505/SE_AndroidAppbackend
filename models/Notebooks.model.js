@@ -13,5 +13,16 @@ const noteSchema = new mongoose.Schema({
     timestamps: true
 })
 
+noteSchema.methods.toJSON = function(){
+    const nwaste = this
+
+    const nwasteObject = nwaste.toObject()
+
+    delete nwasteObject.location
+    delete nwasteObject.description
+
+    return nwasteObject
+}
+
 const notesModel = mongoose.model("Notebooks",noteSchema)
 module.exports = notesModel

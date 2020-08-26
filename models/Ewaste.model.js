@@ -22,5 +22,15 @@ const ewasteSchema = new mongoose.Schema({
     timestamps: true
 })
 
+ewasteSchema.methods.toJSON = function() {
+    const ewaste = this
+    const ewasteObj = ewaste.toObject()
+
+    delete ewasteObj.location
+    delete ewasteObj.specifications
+
+    return ewasteObj
+}
+
 const ewasteModel = mongoose.model('Ewaste',ewasteSchema)
 module.exports = ewasteModel

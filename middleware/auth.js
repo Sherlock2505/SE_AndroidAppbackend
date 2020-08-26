@@ -15,8 +15,6 @@ const auth = async (req, res, next) => {
         req.token = token
         next()
     }catch(e){
-        // console.log(e)
-        // console.log(req.baseUrl)
         if(req.url.split("/").length > 2 && req.url.split("/")[1] == "view"){
             res.redirect(`${req.baseUrl}/view_noauth/${req.params.id}`)
         }

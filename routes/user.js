@@ -7,7 +7,6 @@ const upload = require('../db/upload')
 const ewasteModel = require('../models/Ewaste.model')
 const NwasteModel = require('../models/Notebooks.model')
 const TwasteModel = require('../models/Textbooks.model')
-const { array } = require('../db/upload')
 
 //Route for getting profile of user
 router.get('/me', auth, (req, res) => {

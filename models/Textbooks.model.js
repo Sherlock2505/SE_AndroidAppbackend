@@ -16,7 +16,7 @@ const textSchema = new mongoose.Schema({
         type: String,
     },
     edition: {
-        type: String
+        type: Number
     },
     pincode: {type:Number, required: true},
     location: {type:String, required: true},
@@ -24,6 +24,17 @@ const textSchema = new mongoose.Schema({
 },{
     timestamps: true
 })
+
+textSchema.methods.toJSON = function(){
+    const twaste = this
+
+    const twasteObject = twaste.toObject()
+
+    delete twasteObject.location
+    delete twasteObject.description
+
+    return twasteObject
+}
 
 const textModel = mongoose.model('Textbooks',textSchema)
 module.exports = textModel
