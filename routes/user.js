@@ -84,6 +84,8 @@ router.post('/wishlist', auth, async (req, res) => {
     try{
         req.user.wishlist.push(req.body.item_id)
         await req.user.save()
+        
+        res.status(200).send("Successfull")
     }catch(e){
         res.status(400).send(e)
     }
