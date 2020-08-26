@@ -80,9 +80,9 @@ router.patch('/update',auth, async (req, res) => {
 })
 
 //Route to add item to wishlist
-router.post('/wishlist/:id', auth, async (req, res) => {
+router.post('/wishlist', auth, async (req, res) => {
     try{
-        req.user.wishlist.push(req.params.id)
+        req.user.wishlist.push(req.body.item_id)
         await req.user.save()
     }catch(e){
         res.status(400).send(e)
