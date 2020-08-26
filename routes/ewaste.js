@@ -33,8 +33,10 @@ router.post('/delete/:id',auth,async (req, res)=> {
         const ewaste = await ewasteModel.find({owner:req.user._id,id:_id})
         if(ewaste){
             await ewasteModel.deleteOne({_id:id})
+            res.status(200).send(ewastes)
+        }else{
+            throw new Error('Only owner can delete item on sale')
         }
-        res.status(200).send(ewastes)
     }catch(e){
         res.status(400).send(e)
     }

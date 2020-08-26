@@ -28,11 +28,16 @@ router.post('/create',auth, upload.fields([{name:'gallery', maxCount:8}]),async 
 router.post('/delete/:id',auth,async (req, res)=> {
     
     const id = req.params.id
-    const ewatses = await nwasteModel.find({owner:req.user._id})
+    
 
     try{
-        await nwasteModel.deleteOne({_id:id})
-        res.status(200).send(nwastes)
+        const nwaste = await nwasteModel.find({owner:req.user._id, _id:id})
+        if(nwaste){
+            await nwasteModel.deleteOne({_id:id})
+            res.status(200).send(nwaste)
+        }else{
+            throw new Error('Only owner can delete sell item')
+        }
     }catch(e){
         res.status(400).send(e)
     }
@@ -55,14 +60,13 @@ router.get('/view/:id',auth, async(req, res) => {
 //Seller info will not be available to user
 router.get('/view_noauth/:id', async(req, res) => {
     const id = req.params.id
-    const nwaste = await nwasteModel.findById(id)
+    let nwaste = await nwasteModel.findById(id)
 
     nwaste = {
         _id: nwaste._id,
         name: nwaste.name,
         photos: nwaste.photos,
         price: nwaste.price,
-        used_for: nwaste.used_for,
         description: nwaste.description,
         pincode: nwaste.pincode,
         location: "Login to get full info",

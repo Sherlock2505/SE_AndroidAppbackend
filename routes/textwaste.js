@@ -28,11 +28,17 @@ router.post('/create',auth, upload.fields([{name:'gallery', maxCount:8}]),async 
 router.post('/delete/:id',auth,async (req, res)=> {
     
     const id = req.params.id
-    const ewatses = await twasteModel.find({owner:req.user._id})
+    
 
     try{
-        await twasteModel.deleteOne({_id:id})
-        res.status(200).send(twastes)
+        const twaste = await twasteModel.find({owner:req.user._id, _id:id})
+        if(twaste){
+            await twasteModel.deleteOne({_id:id})
+            res.status(200).send(twastes)
+        }else{
+            throw new Error('Only owner can delete item on sell')
+        }
+        
     }catch(e){
         res.status(400).send(e)
     }
@@ -55,7 +61,7 @@ router.get('/view/:id',auth, async(req, res) => {
 //Seller info will not be available to user
 router.get('/view_noauth/:id', async(req, res) => {
     const id = req.params.id
-    const twaste = await twasteModel.findById(id)
+    let twaste = await twasteModel.findById(id)
 
     twaste = {
         _id: twaste._id,
