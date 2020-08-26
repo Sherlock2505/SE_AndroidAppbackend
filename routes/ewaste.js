@@ -39,10 +39,35 @@ router.post('/delete/:id',auth,async (req, res)=> {
 
 })
 
-//Route for viewing individual ewaste 
+//Route for viewing individual ewaste (authenticated)
 router.get('/view/:id',auth, async(req, res) => {
     const id = req.params.id
     const ewaste = await ewasteModel.findById(id)
+
+    try{
+        res.send(ewaste)
+    }catch(e){
+        res.status(400).send(e)
+    }
+})
+
+//Route for viewing individual ewaste (not authenticated)
+//Seller info will not be available to user
+router.get('/view_noauth/:id', async(req, res) => {
+    const id = req.params.id
+    const ewaste = await ewasteModel.findById(id)
+
+    ewaste = {
+        _id: ewaste._id,
+        name: ewaste.name,
+        photos: ewaste.photos,
+        price: ewaste.price,
+        used_for: ewaste.used_for,
+        specifications: ewaste.specifications,
+        pincode: ewaste.pincode,
+        location: "Login to get full info",
+        owner: "Login to get full info"
+    }
 
     try{
         res.send(ewaste)
@@ -64,22 +89,46 @@ router.get('/all/me',auth,async(req,res) => {
 })
 
 //Route for sending all ewastes on sale
-router.get('/all', auth, async(req, res)=>{
+router.get('/all', async(req, res)=>{
 
     try{
         const ewastes = await ewasteModel.find()
-        res.send(ewastes)
+
+        let ewastes_mod = ewastes.map(ewaste => {
+            return {
+                _id: ewaste._id,
+                name: ewaste.name,
+                photos: ewaste.photos[0],
+                price: ewaste.price,
+                used_for: ewaste.used_for,
+                pincode: ewaste.pincode,
+            }
+        })
+        
+        res.send(ewastes_mod)
     }catch(e){
         res.status(400).send(e)
     }
 })
 
 //Route for sending e-wastes by location filter
-router.get('/all/:pin', auth, async(req, res) => {
+router.get('/all/:pin', async(req, res) => {
 
     try{
         const ewastes = await ewasteModel.find({pincode:req.params.pin})
-        res.send(ewastes)
+        
+        let ewastes_mod = ewastes.map(ewaste => {
+            return {
+                _id: ewaste._id,
+                name: ewaste.name,
+                photos: ewaste.photos[0],
+                price: ewaste.price,
+                used_for: ewaste.used_for,
+                pincode: ewaste.pincode,
+            }
+        })
+        
+        res.send(ewastes_mod)
     }catch(e){
         res.status(400).send(e)
     }
