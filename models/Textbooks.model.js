@@ -11,6 +11,7 @@ const textSchema = new mongoose.Schema({
         required: true
     },
     used_for: {type: String, required: true},
+    thumbnail: {type: String, required: true},
     photos: [String],
     author: {
         type: String,
@@ -32,6 +33,7 @@ textSchema.methods.toJSON = function(){
 
     delete twasteObject.location
     delete twasteObject.description
+    delete twasteObject.owner
 
     return twasteObject
 }

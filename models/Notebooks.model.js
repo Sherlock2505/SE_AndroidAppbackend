@@ -5,6 +5,7 @@ const noteSchema = new mongoose.Schema({
     name: {type:String, required: true},
     price: {type:Number, required: true},
     description: {type: String, required: true},
+    thumbnail: {type: String, required: true},
     photos: [String],
     pincode: {type:Number, required: true},
     location: {type:String, required: true},
@@ -20,6 +21,7 @@ noteSchema.methods.toJSON = function(){
 
     delete nwasteObject.location
     delete nwasteObject.description
+    delete nwasteObject.owner
 
     return nwasteObject
 }

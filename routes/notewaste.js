@@ -5,12 +5,13 @@ const auth = require('../middleware/auth')
 const upload = require('../db/upload')
 
 //Route for creating text-waste product
-router.post('/create',auth, upload.fields([{name:'gallery', maxCount:8}]),async (req, res) => {
+router.post('/create',auth, upload.fields([{name:'thumbnail',maxCount:1},{name:'gallery', maxCount:8}]),async (req, res) => {
     const nwaste = new nwasteModel(req.body)
     nwaste.owner = req.user._id
 
     try{
         if(req.files){
+            const thumbnail_url = req.files['thumbnail'][0].filename
             let all_file = req.files['gallery']
             pics_url = all_file.map((file) => {return file.filename})
             nwaste.photos = pics_url
@@ -65,7 +66,7 @@ router.get('/view_noauth/:id', async(req, res) => {
     nwaste = {
         _id: nwaste._id,
         name: nwaste.name,
-        photos: nwaste.photos,
+        thumbnail: nwaste.thumbnail,
         price: nwaste.price,
         description: nwaste.description,
         pincode: nwaste.pincode,

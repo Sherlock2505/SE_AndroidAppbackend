@@ -11,6 +11,7 @@ const validator = require('validator')
 
 const ewasteSchema = new mongoose.Schema({
     name: {type:String, required:true},
+    thumbnail: {type: String, required: true},
     photos: [String],
     price: {type:Number,required:true},
     used_for: {type:String},
@@ -28,7 +29,8 @@ ewasteSchema.methods.toJSON = function() {
 
     delete ewasteObj.location
     delete ewasteObj.specifications
-
+    delete ewasteObj.owner
+    
     return ewasteObj
 }
 

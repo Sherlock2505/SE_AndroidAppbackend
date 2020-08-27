@@ -5,15 +5,17 @@ const auth = require('../middleware/auth')
 const upload = require('../db/upload')
 
 //Route for creating e-waste product
-router.post('/create',auth, upload.fields([{name:'gallery', maxCount:8}]),async (req, res) => {
+router.post('/create',auth, upload.fields([{name:'thumbnail', maxCount:1},{name:'gallery', maxCount:8}]),async (req, res) => {
     const ewaste = new ewasteModel(req.body)
     ewaste.owner = req.user._id
 
     try{
         if(req.files){
             let all_file = req.files['gallery']
+            const thumbnail_pic = req.files['thumbnail'][0].filename
             pics_url = all_file.map((file) => {return file.filename})
             ewaste.photos = pics_url
+            ewaste.thumbnail = thumbnail_pic
         }
         await ewaste.save()
         res.status(201).send(ewaste)
@@ -65,7 +67,7 @@ router.get('/view_noauth/:id', async(req, res) => {
         ewaste = {
             _id: ewaste._id,
             name: ewaste.name,
-            photos: ewaste.photos,
+            thumbnail: ewaste.thumbnail,
             price: ewaste.price,
             used_for: ewaste.used_for,
             specifications: ewaste.specifications,

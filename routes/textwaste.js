@@ -5,16 +5,18 @@ const auth = require('../middleware/auth')
 const upload = require('../db/upload')
 
 //Route for creating text-waste product
-router.post('/create',auth, upload.fields([{name:'gallery', maxCount:8}]),async (req, res) => {
+router.post('/create',auth, upload.fields([{name:'thumbnail', maxCount:1}, {name:'gallery', maxCount:8}]),async (req, res) => {
     const twaste = new twasteModel(req.body)
     twaste.owner = req.user._id
 
     try{
         if(req.files){
             let all_file = req.files['gallery']
+            const thumbnail_url = req.files['thumbnail'][0].filename
             pics_url = all_file.map((file) => {return file.filename})
             twaste.photos = pics_url
         }
+        twaste.thumbnail = thumbnail_url
         await twaste.save()
         res.status(201).send(twaste)
     }catch(e){
@@ -66,7 +68,7 @@ router.get('/view_noauth/:id', async(req, res) => {
     twaste = {
         _id: twaste._id,
         name: twaste.name,
-        photos: twaste.photos,
+        thumbnail: twaste.thumbnail,
         price: twaste.price,
         used_for: twaste.used_for,
         description: twaste.description,
