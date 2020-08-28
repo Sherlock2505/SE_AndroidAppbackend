@@ -10,7 +10,7 @@ const textSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    used_for: {type: String, required: true},
+    used_for: {type: String},
     thumbnail: {type: String, required: true},
     photos: [String],
     author: {
