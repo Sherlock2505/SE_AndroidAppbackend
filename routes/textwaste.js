@@ -15,8 +15,8 @@ router.post('/create',auth, upload.fields([{name:'thumbnail', maxCount:1}, {name
             const thumbnail_url = req.files['thumbnail'][0].filename
             pics_url = all_file.map((file) => {return file.filename})
             twaste.photos = pics_url
+            twaste.thumbnail = thumbnail_url
         }
-        twaste.thumbnail = thumbnail_url
         await twaste.save()
         res.status(201).send(twaste)
     }catch(e){

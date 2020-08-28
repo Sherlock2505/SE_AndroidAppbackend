@@ -15,6 +15,7 @@ router.post('/create',auth, upload.fields([{name:'thumbnail',maxCount:1},{name:'
             let all_file = req.files['gallery']
             pics_url = all_file.map((file) => {return file.filename})
             nwaste.photos = pics_url
+            nwaste.thumbnail = thumbnail_url
         }
         await nwaste.save()
         res.status(201).send(nwaste)
