@@ -15,6 +15,7 @@ const textSchema = new mongoose.Schema({
     photos: [String],
     author: {
         type: String,
+        required: true
     },
     edition: {
         type: Number
