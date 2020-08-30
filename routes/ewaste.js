@@ -53,9 +53,10 @@ router.post('/delete/:id',auth,async (req, res)=> {
 //Route for viewing individual ewaste (authenticated)
 router.get('/view/:id',auth, async(req, res) => {
     const id = req.params.id
-    const ewaste = await (await ewasteModel.findById(id)).toObject()
+    
     // console.log(ewaste)
     try{
+        const ewaste = await (await ewasteModel.findById(id)).toObject()
         res.send(ewaste)
     }catch(e){
         res.status(400).send(e)

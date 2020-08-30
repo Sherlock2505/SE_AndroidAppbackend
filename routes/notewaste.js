@@ -52,9 +52,9 @@ router.post('/delete/:id',auth,async (req, res)=> {
 //Route for viewing individual nwaste (authenticated)
 router.get('/view/:id',auth, async(req, res) => {
     const id = req.params.id
-    const nwaste = await (await nwasteModel.findById(id)).toObject()
 
     try{
+        const nwaste = await (await nwasteModel.findById(id)).toObject()
         res.send(nwaste)
     }catch(e){
         res.status(400).send(e)
@@ -65,21 +65,22 @@ router.get('/view/:id',auth, async(req, res) => {
 //Seller info will not be available to user
 router.get('/view_noauth/:id', async(req, res) => {
     const id = req.params.id
-    let nwaste = await nwasteModel.findById(id)
-
-    nwaste = {
-        _id: nwaste._id,
-        name: nwaste.name,
-        thumbnail: nwaste.thumbnail,
-        price: nwaste.price,
-        description: nwaste.description,
-        pincode: nwaste.pincode,
-        location: "Login to get full info",
-        owner: "Login to get full info"
-    }
 
     try{
+        let nwaste = await nwasteModel.findById(id)
+
+        nwaste = {
+            _id: nwaste._id,
+            name: nwaste.name,
+            thumbnail: nwaste.thumbnail,
+            price: nwaste.price,
+            description: nwaste.description,
+            pincode: nwaste.pincode,
+            location: "Login to get full info",
+            owner: "Login to get full info"
+        }
         res.send(nwaste)
+
     }catch(e){
         res.status(400).send(e)
     }

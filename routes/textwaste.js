@@ -65,23 +65,22 @@ router.get('/view/:id',auth, async(req, res) => {
 //Seller info will not be available to user
 router.get('/view_noauth/:id', async(req, res) => {
     const id = req.params.id
-    let twaste = await twasteModel.findById(id)
-
-    twaste = {
-        _id: twaste._id,
-        name: twaste.name,
-        thumbnail: twaste.thumbnail,
-        price: twaste.price,
-        used_for: twaste.used_for,
-        description: twaste.description,
-        author: twaste.author,
-        edition: twaste.edition,
-        pincode: twaste.pincode,
-        location: "Login to get full info",
-        owner: "Login to get full info"
-    }
 
     try{
+        let twaste = await twasteModel.findById(id)
+        twaste = {
+            _id: twaste._id,
+            name: twaste.name,
+            thumbnail: twaste.thumbnail,
+            price: twaste.price,
+            used_for: twaste.used_for,
+            description: twaste.description,
+            author: twaste.author,
+            edition: twaste.edition,
+            pincode: twaste.pincode,
+            location: "Login to get full info",
+            owner: "Login to get full info"
+        }
         res.send(twaste)
     }catch(e){
         res.status(400).send(e)
