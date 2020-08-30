@@ -12,13 +12,18 @@ router.post('/create',auth, upload.fields([{name:'thumbnail', maxCount:1},{name:
     try{
         if(req.files){
             let all_file = req.files['gallery']
+            if(!req.files['thumbnail']){
+                throw new Error('Thumbnail pic is required')
+            }
             const thumbnail_pic = req.files['thumbnail'][0].filename
             pics_url = all_file.map((file) => {return file.filename})
             ewaste.photos = pics_url
             ewaste.thumbnail = thumbnail_pic
+        }else{
+            throw new Error('Something went wrong please try again')
         }
         await ewaste.save()
-        res.status(201).send(ewaste)
+        res.status(201).send(ewaste.toObject())
     }catch(e){
         console.log(e)
         res.status(400).send(e)
@@ -32,10 +37,10 @@ router.post('/delete/:id',auth,async (req, res)=> {
     const id = req.params.id
 
     try{
-        const ewaste = await ewasteModel.find({owner:req.user._id,id:_id})
+        const ewaste = await ewasteModel.findOne({owner:req.user._id,_id:id})
         if(ewaste){
             await ewasteModel.deleteOne({_id:id})
-            res.status(200).send(ewastes)
+            res.status(200).json({msg:"Deleted successfully"})
         }else{
             throw new Error('Only owner can delete item on sale')
         }
@@ -48,7 +53,7 @@ router.post('/delete/:id',auth,async (req, res)=> {
 //Route for viewing individual ewaste (authenticated)
 router.get('/view/:id',auth, async(req, res) => {
     const id = req.params.id
-    const ewaste = await ewasteModel.findById(id)
+    const ewaste = await (await ewasteModel.findById(id)).toObject()
     // console.log(ewaste)
     try{
         res.send(ewaste)
@@ -90,7 +95,7 @@ router.get('/all/me',auth,async(req,res) => {
     try{
         const all_ewaste = await ewasteModel.find({owner: req.user._id})
         // const ewastes = all_ewaste.map(ewaste => ewaste.toObject())
-        res.send(all_ewaste)
+        res.send(all_ewaste.map((ewaste) => ewaste.toObject()))
     }catch(e){
         res.status(400).send(e)
     }

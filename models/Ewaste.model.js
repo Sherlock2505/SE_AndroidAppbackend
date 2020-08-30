@@ -1,14 +1,6 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
 
-//Name
-//Photos
-//Price
-//Used for
-//Specifications if any
-//Pin code
-//Location
-
 const ewasteSchema = new mongoose.Schema({
     name: {type:String, required:true},
     thumbnail: {type: String, required: true},

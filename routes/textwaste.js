@@ -12,13 +12,16 @@ router.post('/create',auth, upload.fields([{name:'thumbnail', maxCount:1}, {name
     try{
         if(req.files){
             let all_file = req.files['gallery']
+            if(!req.files['thumbnail']){
+                throw new Error('thumbnail pic is required')
+            }
             const thumbnail_url = req.files['thumbnail'][0].filename
             pics_url = all_file.map((file) => {return file.filename})
             twaste.photos = pics_url
             twaste.thumbnail = thumbnail_url
         }
         await twaste.save()
-        res.status(201).send(twaste)
+        res.status(201).send(twaste.toObject())
     }catch(e){
         console.log(e)
         res.status(400).send(e)
@@ -31,12 +34,11 @@ router.post('/delete/:id',auth,async (req, res)=> {
     
     const id = req.params.id
     
-
     try{
-        const twaste = await twasteModel.find({owner:req.user._id, _id:id})
+        const twaste = await twasteModel.findOne({owner:req.user._id, _id:id})
         if(twaste){
             await twasteModel.deleteOne({_id:id})
-            res.status(200).send(twastes)
+            res.status(200).send({msg:"Deleted Successfully"})
         }else{
             throw new Error('Only owner can delete item on sell')
         }
@@ -50,9 +52,9 @@ router.post('/delete/:id',auth,async (req, res)=> {
 //Route for viewing individual twaste (authenticated)
 router.get('/view/:id',auth, async(req, res) => {
     const id = req.params.id
-    const twaste = await twasteModel.findById(id)
-
+    
     try{
+        const twaste = await (await twasteModel.findById(id)).toObject()
         res.send(twaste)
     }catch(e){
         res.status(400).send(e)
@@ -91,7 +93,7 @@ router.get('/all/me',auth,async(req,res) => {
 
     try{
         const all_twaste = await twasteModel.find({owner: req.user._id})
-        res.status(200).send(all_twaste)
+        res.status(200).send(all_twaste.map((twaste) => {return twaste.toObject()}))
     }catch(e){
         res.status(400).send(e)
     }

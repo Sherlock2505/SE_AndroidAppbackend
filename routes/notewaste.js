@@ -11,6 +11,9 @@ router.post('/create',auth, upload.fields([{name:'thumbnail',maxCount:1},{name:'
 
     try{
         if(req.files){
+            if(!req.files['thumbnail']){
+                throw new Error('thumbnail pic is required')
+            }
             const thumbnail_url = req.files['thumbnail'][0].filename
             let all_file = req.files['gallery']
             pics_url = all_file.map((file) => {return file.filename})
@@ -33,10 +36,10 @@ router.post('/delete/:id',auth,async (req, res)=> {
     
 
     try{
-        const nwaste = await nwasteModel.find({owner:req.user._id, _id:id})
+        const nwaste = await nwasteModel.findOne({owner:req.user._id, _id:id})
         if(nwaste){
             await nwasteModel.deleteOne({_id:id})
-            res.status(200).send(nwaste)
+            res.status(200).send({msg:"Deleted successfully"})
         }else{
             throw new Error('Only owner can delete sell item')
         }
@@ -49,7 +52,7 @@ router.post('/delete/:id',auth,async (req, res)=> {
 //Route for viewing individual nwaste (authenticated)
 router.get('/view/:id',auth, async(req, res) => {
     const id = req.params.id
-    const nwaste = await nwasteModel.findById(id)
+    const nwaste = await (await nwasteModel.findById(id)).toObject()
 
     try{
         res.send(nwaste)
@@ -87,7 +90,7 @@ router.get('/all/me',auth,async(req,res) => {
 
     try{
         const all_nwaste = await nwasteModel.find({owner: req.user._id})
-        res.status(200).send(all_nwaste)
+        res.status(200).send(all_nwaste.map((nwaste) => {return nwaste.toObject()}))
     }catch(e){
         res.status(400).send(e)
     }
