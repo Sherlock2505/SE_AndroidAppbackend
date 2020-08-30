@@ -33,7 +33,6 @@ router.post('/create',auth, upload.fields([{name:'thumbnail',maxCount:1},{name:'
 router.post('/delete/:id',auth,async (req, res)=> {
     
     const id = req.params.id
-    
 
     try{
         const nwaste = await nwasteModel.findOne({owner:req.user._id, _id:id})
@@ -44,6 +43,7 @@ router.post('/delete/:id',auth,async (req, res)=> {
             throw new Error('Only owner can delete sell item')
         }
     }catch(e){
+        console.log(e)
         res.status(400).send(e)
     }
 

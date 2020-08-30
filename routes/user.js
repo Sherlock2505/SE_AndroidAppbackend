@@ -121,7 +121,7 @@ router.post('/remove/wishlist/:id', auth, async (req, res) => {
     try{
         const id = mongoose.Types.ObjectId(req.params.id);
 
-        req.user.wishlist.filter((item_id) => {
+        req.user.wishlist = req.user.wishlist.filter((item_id) => {
             return item_id.equals(id)===false
         })
 
@@ -153,7 +153,7 @@ router.get('/wishlist/me', auth,async (req, res) => {
                 removables.push(item_id)
             }
         }
-        req.user.wishlist.filter((item_id) => {
+        req.user.wishlist = req.user.wishlist.filter((item_id) => {
             return removables.includes(item_id)===false
         })
         await req.user.save()
