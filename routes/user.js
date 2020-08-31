@@ -104,9 +104,9 @@ router.patch('/update',auth, async (req, res) => {
 })
 
 //Route to add item to wishlist
-router.post('/add/wishlist/:id', auth, async (req, res) => {
+router.post('/add/wishlist', auth, async (req, res) => {
     try{
-        req.user.wishlist.push(req.params.id)
+        req.user.wishlist.push(req.body.item_id)
         await req.user.save()
         
         res.status(200).send("Successfull")
@@ -116,10 +116,10 @@ router.post('/add/wishlist/:id', auth, async (req, res) => {
 })
 
 //Route to remove item from wishlist
-router.post('/remove/wishlist/:id', auth, async (req, res) => {
+router.delete('/remove/wishlist', auth, async (req, res) => {
 
     try{
-        const id = mongoose.Types.ObjectId(req.params.id);
+        const id = mongoose.Types.ObjectId(req.body.item_id);
 
         req.user.wishlist = req.user.wishlist.filter((item_id) => {
             return item_id.equals(id)===false
