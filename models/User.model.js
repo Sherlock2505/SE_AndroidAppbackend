@@ -2,8 +2,8 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const { schema } = require('./Ewaste.model')
-
+const faqschema = require('../models/faq_schema')
+ 
 const userSchema = new mongoose.Schema({
     name: {
         type: String,

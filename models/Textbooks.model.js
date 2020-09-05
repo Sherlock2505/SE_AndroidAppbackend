@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
+const faqschema = require('./faq_schema')
 
 const textSchema = new mongoose.Schema({
     name: {
@@ -24,6 +25,7 @@ const textSchema = new mongoose.Schema({
     edition: {
         type: Number
     },
+    faqs: [faqschema],
     pincode: {type:Number, required: true},
     location: {type:String, required: true},
     owner: {type:mongoose.Schema.Types.ObjectId, required: true, ref: 'Users'}

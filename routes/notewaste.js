@@ -126,4 +126,37 @@ router.get('/all/:pin', async(req, res) => {
     
 })
 
+//Route for asking query regarding product
+router.post('/ask/:id', auth, async(req, res) => {
+    try{
+        const nwaste = await nwasteModel.findById(req.params.id)
+        const faq = {
+            question: req.body.question,
+            owner: req.user._id 
+        }
+        nwaste.faqs.push(faq)
+        await nwaste.save()
+        res.status(201).send({msg:"Successfully created"})
+    }catch(e){
+        console.log(e)
+        res.status(400).send(e)
+    }
+})
+
+//Route for answering question
+router.post('/answer/:id', auth, async(req,res) => {
+    try{
+        const nwaste = await nwasteModel.findById(req.params.id)
+        if(!req.user._id.equals(nwaste.owner)){
+            throw new Error('Only seller can answer to the query')
+        }
+        nwaste.faqs.find((faq) => faq._id.equals(req.body.id)).answer = req.body.answer
+        await nwaste.save()
+        res.send({msg:"Successfully answered the query"})
+    }catch(e){
+        console.log(e)
+        res.status(400).send({msg:"Some error occured please make sure you are the owner of this product"})
+    }   
+})
+
 module.exports = router
