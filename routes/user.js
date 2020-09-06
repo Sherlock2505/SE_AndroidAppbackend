@@ -38,12 +38,8 @@ router.get('/other/:id', async (req, res) => {
 })
 
 //Route for sign up of user(creating user)
-router.post('/create', upload.single('prof_pic'), async (req, res)=>{
+router.post('/create', async (req, res)=>{
     const user = new User(req.body)
-    
-    if(req.file!=undefined){
-        user.dp_url = req.file.filename
-    }
 
     try{
         await user.save()
@@ -70,6 +66,7 @@ router.post('/login',async(req,res) => {
 //Route to Logout user
 router.post('/logout', auth, async (req, res) => {
 
+
     try{
         req.user.tokens = req.user.tokens.filter((token) => {
             return token.token !== req.token
@@ -84,14 +81,18 @@ router.post('/logout', auth, async (req, res) => {
 })
 
 //Route to update user
-router.patch('/update',auth, async (req, res) => {
+router.patch('/update', auth, upload.single('prof_pic'), async (req, res) => {
     const updates = Object.keys(req.body)
+    const user = req.user
     
-    try{
-        const user = req.user
+    if(req.file){
+        user.dp_url = req.file.filename
+    }
 
+    try{
+        
         updates.forEach((update) => {
-            user[update] = req.body[update]
+                user[update] = req.body[update]
         })
 
         await user.save()
