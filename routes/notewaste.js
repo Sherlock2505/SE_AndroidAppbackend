@@ -76,6 +76,7 @@ router.get('/view_noauth/:id', async(req, res) => {
             price: nwaste.price,
             description: nwaste.description,
             pincode: nwaste.pincode,
+            photos: nwaste.photos,
             location: "Login to get full info",
             owner: "Login to get full info"
         }
