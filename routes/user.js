@@ -157,7 +157,6 @@ router.get('/wishlist/me', auth,async (req, res) => {
                     throw new Error('Seller of the item cannot add item to wishlist')
                 }
                 new_Obj = ewaste.toJSON()
-                delete new_Obj.photos
                 new_Obj.category = 'ewaste'
                 items.push(new_Obj)
             }else if(textbook){
@@ -165,7 +164,6 @@ router.get('/wishlist/me', auth,async (req, res) => {
                     throw new Error('Seller of the item cannot add item to wishlist')
                 }
                 new_Obj = textbook.toJSON()
-                delete new_Obj.photos
                 new_Obj.category = 'twaste'
                 items.push(new_Obj)
             }else if(notebook){
@@ -173,7 +171,6 @@ router.get('/wishlist/me', auth,async (req, res) => {
                     throw new Error('Seller of the item cannot add item to wishlist')
                 }
                 new_Obj = notebook.toJSON()
-                delete new_Obj.photos
                 new_Obj.category = 'nwaste'
                 items.push(new_Obj)
             }else{
