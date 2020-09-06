@@ -154,14 +154,17 @@ router.get('/wishlist/me', auth,async (req, res) => {
             let new_Obj
             if(ewaste){
                 new_Obj = ewaste.toJSON()
+                delete new_Obj.photos
                 new_Obj.category = 'ewaste'
                 items.push(new_Obj)
             }else if(textbook){
                 new_Obj = textbook.toJSON()
+                delete new_Obj.photos
                 new_Obj.category = 'twaste'
                 items.push(new_Obj)
             }else if(notebook){
                 new_Obj = notebook.toJSON()
+                delete new_Obj.photos
                 new_Obj.category = 'nwaste'
                 items.push(new_Obj)
             }else{

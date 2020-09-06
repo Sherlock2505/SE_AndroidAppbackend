@@ -24,7 +24,8 @@ ewasteSchema.methods.toJSON = function() {
     delete ewasteObj.location
     delete ewasteObj.specifications
     delete ewasteObj.owner
-    
+    delete ewasteObj.faqs
+
     return ewasteObj
 }
 
