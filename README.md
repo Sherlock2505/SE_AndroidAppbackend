@@ -19,6 +19,7 @@ For the installation of node use:-
 
       $ git clone https://github.com/Sherlock2505/SE_AndroidAppbackend
       $ cd SE_course_proj_backend
+      $ npm install --save
       $ npm start
 
 use localhost:3000 as the base-url to make requests.
