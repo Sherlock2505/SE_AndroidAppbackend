@@ -24,7 +24,8 @@ noteSchema.methods.toJSON = function(){
     delete nwasteObject.location
     delete nwasteObject.description
     delete nwasteObject.owner
-
+    delete nwasteObject.faqs
+    
     return nwasteObject
 }
 

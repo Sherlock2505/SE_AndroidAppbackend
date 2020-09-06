@@ -41,7 +41,8 @@ textSchema.methods.toJSON = function(){
     delete twasteObject.location
     delete twasteObject.description
     delete twasteObject.owner
-
+    delete twasteObject.faqs
+    
     return twasteObject
 }
 
