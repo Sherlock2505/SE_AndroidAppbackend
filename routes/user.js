@@ -107,6 +107,18 @@ router.patch('/update', auth, upload.single('prof_pic'), async (req, res) => {
 router.post('/add/wishlist', auth, async (req, res) => {
     let item_id = req.body.item_id
     try{
+        const ewaste = await ewasteModel.findById(item_id)
+        const textbook = await twasteModel.findById(item_id)
+        const notebook = await nwasteModel.findById(item_id)
+        
+        if(ewaste && ewaste.owner._id.equals(req.user._id)){
+            throw new Error('Seller of the item cannot wishlist the item')
+        }else if(textbook && textbook.owner._id.equals(req.user._id)){
+            throw new Error('Seller of the item cannot wishlist the item')
+        }else if(notebook && notebook.owner._id.equals(req.user._id)){
+            throw new Error('Seller of the item cannot wishlist the item')
+        }
+
         if(req.user.wishlist.includes(item_id)){
             throw new Error('item already exists in wishlist')
         }
