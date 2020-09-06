@@ -151,8 +151,19 @@ router.get('/wishlist/me', auth,async (req, res) => {
             const textbook = await twasteModel.findById(item_id)
             const notebook = await nwasteModel.findById(item_id)
             
-            if((ewaste || textbook || notebook)){
-                items.push((ewaste || textbook || notebook).toObject())
+            let new_Obj
+            if(ewaste){
+                new_Obj = ewaste.toJSON()
+                new_Obj.category = 'ewaste'
+                items.push(new_Obj)
+            }else if(textbook){
+                new_Obj = textbook.toJSON()
+                new_Obj.category = 'twaste'
+                items.push(new_Obj)
+            }else if(notebook){
+                new_Obj = notebook.toJSON()
+                new_Obj.category = 'nwaste'
+                items.push(new_Obj)
             }else{
                 removables.push(item_id)
             }
