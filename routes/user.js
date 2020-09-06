@@ -5,9 +5,8 @@ const multer = require('multer')
 const auth = require('../middleware/auth')
 const upload = require('../db/upload')
 const ewasteModel = require('../models/Ewaste.model')
-const NwasteModel = require('../models/Notebooks.model')
-const TwasteModel = require('../models/Textbooks.model')
-const notesModel = require('../models/Notebooks.model')
+const nwasteModel = require('../models/Notebooks.model')
+const twasteModel = require('../models/Textbooks.model')
 const mongoose = require('mongoose')
 
 //Route for getting profile of user
@@ -84,7 +83,7 @@ router.post('/logout', auth, async (req, res) => {
 router.patch('/update', auth, upload.single('prof_pic'), async (req, res) => {
     const updates = Object.keys(req.body)
     const user = req.user
-    
+
     if(req.file){
         user.dp_url = req.file.filename
     }
@@ -149,8 +148,8 @@ router.get('/wishlist/me', auth,async (req, res) => {
         for(let i=0;i<wishlist.length;i++){
             const item_id = wishlist[i]
             const ewaste = await ewasteModel.findById(item_id)
-            const textbook = await ewasteModel.findById(item_id)
-            const notebook = await notesModel.findById(item_id)
+            const textbook = await twasteModel.findById(item_id)
+            const notebook = await nwasteModel.findById(item_id)
             
             if((ewaste || textbook || notebook)){
                 items.push((ewaste || textbook || notebook).toObject())
