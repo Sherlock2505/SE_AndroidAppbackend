@@ -105,11 +105,12 @@ router.patch('/update',auth, async (req, res) => {
 
 //Route to add item to wishlist
 router.post('/add/wishlist', auth, async (req, res) => {
+    let item_id = req.body.item_id
     try{
         if(req.user.wishlist.includes(item_id)){
             throw new Error('item already exists in wishlist')
         }
-        req.user.wishlist.push(req.body.item_id)
+        req.user.wishlist.push(item_id)
         await req.user.save()
         
         res.status(200).send("Successfull")
