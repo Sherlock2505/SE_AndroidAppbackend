@@ -3,6 +3,7 @@ const ewasteModel = require('../models/Ewaste.model')
 const router = new express.Router()
 const auth = require('../middleware/auth')
 const upload = require('../db/upload')
+const {faqschema, faqModel} = require('../models/faq_schema')
 
 //Route for creating e-waste product
 router.post('/create',auth, upload.fields([{name:'thumbnail', maxCount:1},{name:'gallery', maxCount:8}]),async (req, res) => {
@@ -129,6 +130,39 @@ router.get('/all/:pin', async(req, res) => {
         res.status(400).send(e)
     }
     
+})
+
+//Route for asking query regarding product
+router.post('/ask/:id', auth, async(req, res) => {
+    try{
+        const ewaste = await ewasteModel.findById(req.params.id)
+        const faq = {
+            question: req.body.question,
+            owner: req.user._id 
+        }
+        ewaste.faqs.push(faq)
+        await ewaste.save()
+        res.status(201).send({msg:"Successfully created"})
+    }catch(e){
+        console.log(e)
+        res.status(400).send(e)
+    }
+})
+
+//Route for answering question
+router.post('/answer/:id', auth, async(req,res) => {
+    try{
+        const ewaste = await ewasteModel.findById(req.params.id)
+        if(!req.user._id.equals(ewaste.owner)){
+            throw new Error('Only seller can answer to the query')
+        }
+        ewaste.faqs.find((faq) => faq._id.equals(req.body.id)).answer = req.body.answer
+        await ewaste.save()
+        res.send({msg:"Successfully answered the query"})
+    }catch(e){
+        console.log(e)
+        res.status(400).send({msg:"Some error occured please make sure you are the owner of this product"})
+    }   
 })
 
 module.exports = router

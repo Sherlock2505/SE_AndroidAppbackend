@@ -80,6 +80,7 @@ router.post('/logout', auth, async (req, res) => {
 })
 
 //Route to update user
+<<<<<<< HEAD
 router.patch('/update', auth, upload.single('prof_pic'), async (req, res) => {
     const updates = Object.keys(req.body)
     const user = req.user
@@ -90,6 +91,17 @@ router.patch('/update', auth, upload.single('prof_pic'), async (req, res) => {
 
     try{
         
+=======
+//Route to update userjfubfbfu
+router.patch('/update',auth, upload.single('prof_pic'), async (req, res) => {
+    const updates = Object.keys(req.body)
+    
+    try{
+        const user = req.user
+        if(req.file){
+            user.dp_url = req.file.filename
+        }
+>>>>>>> trial
         updates.forEach((update) => {
                 user[update] = req.body[update]
         })
