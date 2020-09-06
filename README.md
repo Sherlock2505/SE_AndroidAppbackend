@@ -36,7 +36,9 @@ The following are the major requests that can be made to server
 * Sell product - {BASE_URL}/{type_of_waste}/create
 * Delete sold out product - {BASE_URL}/{type_of_waste}/delete/:id
 * Add product to wishlist - {BASE_URL}/users/add/wishlist
-* Get the location filtered results - {BASE_URL}/type_of_waste/all/:pin
+* Get the location filtered results - {BASE_URL}/{type_of_waste}/all/:pin
+
+type_of_waste = {"ewaste", "textwaste", "notewaste"}
 
 # Credits
 
