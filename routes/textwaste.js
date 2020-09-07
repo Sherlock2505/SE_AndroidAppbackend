@@ -79,6 +79,7 @@ router.get('/view_noauth/:id', async(req, res) => {
             edition: twaste.edition,
             pincode: twaste.pincode,
             photos: twaste.photos,
+            faqs: twaste.faqs,
             location: "Login to get full info",
             owner: "Login to get full info"
         }

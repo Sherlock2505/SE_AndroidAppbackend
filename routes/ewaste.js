@@ -80,6 +80,7 @@ router.get('/view_noauth/:id', async(req, res) => {
             specifications: ewaste.specifications,
             pincode: ewaste.pincode,
             photos: ewaste.photos,
+            faqs: ewaste.faqs,
             location: "Login to get full info",
             owner: "Login to get full info"
         }
