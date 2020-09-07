@@ -133,7 +133,8 @@ router.post('/ask/:id', auth, async(req, res) => {
         const nwaste = await nwasteModel.findById(req.params.id)
         const faq = {
             question: req.body.question,
-            owner: req.user._id 
+            owner: req.user._id,
+            name: req.user.name 
         }
         nwaste.faqs.push(faq)
         await nwaste.save()
