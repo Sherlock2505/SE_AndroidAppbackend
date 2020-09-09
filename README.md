@@ -17,7 +17,7 @@ For the installation of node use:-
 
 ## development server
 
-      $ git clone https://github.com/Sherlock2505/SE_AndroidAppbackend
+      $ git clone https://github.com/Sherlock2505/SE_AndroidAppbackend.git
       $ cd SE_course_proj_backend
       $ npm install --save
       $ npm start
